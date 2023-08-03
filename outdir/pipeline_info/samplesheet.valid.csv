@@ -1,0 +1,3 @@
+id,fasta
+seatoxin-ref,/home/luisasantus/Desktop/crg_cluster/projects/nf-core-msa/test-dataset/setoxin-ref.fa
+toxin-ref,/home/luisasantus/Desktop/crg_cluster/projects/nf-core-msa/test-dataset/toxin-ref.fa
