@@ -49,7 +49,7 @@ include { INPUT_CHECK } from '../subworkflows/local/input_check'
 include { FASTQC                      } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
-
+include { DB_SEARCH                   } from '../subworkflows/local/db_search'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -72,7 +72,19 @@ workflow GETSTRUCTURES {
     )
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
-     INPUT_CHECK.out.fastas.view()
+    // 
+    // SUBWORKFLOW: Search for databases
+    //
+
+    DB_SEARCH (
+        INPUT_CHECK.out.fastas,
+        INPUT_CHECK.out.dbs
+    )
+    ch_versions = ch_versions.mix(DB_SEARCH.out.versions)
+
+    //
+    // SUBWORKFLOW: fetches the structures
+    //
 
 
 

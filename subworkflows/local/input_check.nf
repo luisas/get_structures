@@ -27,12 +27,11 @@ workflow INPUT_CHECK {
         .map { create_db_channel(it) }
         .set { dbs }
     ch_versions = ch_versions.mix(DBSHEET_CHECK.out.versions)
-    dbs.view()
-    
+
     emit:
     fastas        
     dbs                             // channel: [ val(meta), [ reads ] ]
-    versions = SAMPLESHEET_CHECK.out.versions // channel: [ versions.yml ]
+    versions = ch_versions // channel: [ versions.yml ]
 }
 
 // Function to get list of [ meta, [ fastq_1, fastq_2 ] ]

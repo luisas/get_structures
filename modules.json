@@ -19,6 +19,20 @@
                             "modules"
                         ]
                     },
+                    "mmseqs/createdb": {
+                        "branch": "master",
+                        "git_sha": "5810d3c1478de7952741977e152dc0561f34788d",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
+                    "mmseqs/createtsv": {
+                        "branch": "master",
+                        "git_sha": "08457078ef1f7ab682418f673150a0acf8a6bdb1",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
                     "mmseqs/search": {
                         "branch": "master",
                         "git_sha": "ef7fb13c6bbad222878e14395b9608674e97e966",
