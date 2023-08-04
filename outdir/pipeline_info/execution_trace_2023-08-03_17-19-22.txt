@@ -1,3 +1,0 @@
-task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
-1	78/478c54	162359	NFCORE_GETSTRUCTURES:GETSTRUCTURES:INPUT_CHECK:SAMPLESHEET_CHECK (samplesheet.csv)	COMPLETED	0	2023-08-03 17:19:25.982	136ms	79ms	58.0%	9.5 MB	30.2 MB	1.4 MB	591 B
-2	92/4fb499	162370	NFCORE_GETSTRUCTURES:GETSTRUCTURES:INPUT_CHECK:DBSHEET_CHECK (dbsheet.csv)	FAILED	1	2023-08-03 17:19:25.990	181ms	107ms	-	-	-	-	-

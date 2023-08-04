@@ -56,7 +56,16 @@
             "description": "Parameters used to describe centralised config profiles. These should not be edited.",
             "help_text": "The centralised nf-core configuration profiles use a handful of pipeline parameters to describe themselves. This information is then printed to the Nextflow log when you run a pipeline. You should not need to change these values when you run a pipeline.",
             "properties": {
-                "format_output": {
+                "mmseqs_format_output": {
+                    "type": "string"
+                },
+                "mmseqs_min_id": {
+                    "type": "string"
+                },
+                "mmseqs_min_cov": {
+                    "type": "string"
+                },
+                "mmseqs_cov_type":{
                     "type": "string"
                 }
             }
