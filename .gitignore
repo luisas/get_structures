@@ -6,4 +6,4 @@ results/
 testing/
 testing*
 *.pyc
-outdir/
+outdir/*

@@ -68,6 +68,14 @@
                 "mmseqs_cov_type":{
                     "type": "string"
                 }
+                ,
+                "split_fasta":{
+                    "type": "boolean"
+                }
+                ,
+                "fasta_chunk_size":{
+                    "type": "integer"
+                }
             }
         },
         "institutional_config_options": {
