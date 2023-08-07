@@ -1,10 +1,12 @@
 CUSTOM_DUMPSOFTWAREVERSIONS:
-  python: 3.11.3
+  python: 3.11.0
   yaml: '6.0'
 DBSHEET_CHECK:
-  python: 3.11.3
+  python: 3.8.3
+MMSEQS_EASYSEARCH:
+  mmseqs: 14.7e284
 SAMPLESHEET_CHECK:
-  python: 3.11.3
+  python: 3.8.3
 Workflow:
   Nextflow: 23.04.2
   nf-core/getstructures: 1.0dev

@@ -33,6 +33,13 @@
                             "modules"
                         ]
                     },
+                    "mmseqs/easysearch": {
+                        "branch": "master",
+                        "git_sha": "b58a51fa664ea5727c751ba89b434ceaf7bab3b8",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
                     "mmseqs/search": {
                         "branch": "master",
                         "git_sha": "ef7fb13c6bbad222878e14395b9608674e97e966",

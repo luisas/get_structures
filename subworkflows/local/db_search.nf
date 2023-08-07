@@ -14,6 +14,8 @@ workflow DB_SEARCH {
     ch_versions = Channel.empty()
 
     MMSEQS_EASYSEARCH ( ch_fastas, target_db )
+    ch_versions = ch_versions.mix(MMSEQS_EASYSEARCH.out.versions)
+    
     //
     // Prep db for query fasta file
     //
