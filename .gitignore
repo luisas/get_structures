@@ -7,3 +7,5 @@ testing/
 testing*
 *.pyc
 outdir/*
+.ipynb_checkpoints/
+outdir

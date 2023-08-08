@@ -1,6 +1,8 @@
 include { MMSEQS_EASYSEARCH } from '../../modules/nf-core/mmseqs/easysearch/main'                                                                                                                                        
 include { STORE_FASTA_CHUNKS } from '../../modules/local/store_fasta_chunks.nf'
 include { MERGE_AND_SAVE } from '../../modules/local/merge_and_save.nf'
+include { FILTER_HITS    } from '../../modules/local/filter_hits.nf'
+
 
 workflow DB_SEARCH {
 
@@ -26,6 +28,9 @@ workflow DB_SEARCH {
                                                             return [tmp, fastafile] 
                                                         }
     }
+
+
+
     // 
     // Search in database
     //
@@ -38,13 +43,23 @@ workflow DB_SEARCH {
 
     MMSEQS_EASYSEARCH ( ch_input_for_search.fasta, ch_input_for_search.db )
     hits = MMSEQS_EASYSEARCH.out.tsv
+    ch_versions = ch_versions.mix(MMSEQS_EASYSEARCH.out.versions)
+
+    // If we have split the fasta, we can merge the results
     if(params.split_fasta && params.mmseqs_save_merged){
         MERGE_AND_SAVE(hits.map{ meta, tsv -> [ [id: meta["group"]], tsv] }.groupTuple(by: 0), "mmseqs_merged", "tsv")
     }
-    ch_versions = ch_versions.mix(MMSEQS_EASYSEARCH.out.versions)
     
+    //
+    // FILTER THE SEARCH: fetches the structures
+    //
+    FILTER_HITS (
+        hits
+    )
+    ch_versions = ch_versions.mix(FILTER_HITS.out.versions)
 
     emit:
+    filtered_hits = FILTER_HITS.out.filtered_hits
     versions = ch_versions.ifEmpty(null)
 
 }

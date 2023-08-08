@@ -60,22 +60,41 @@
                     "type": "string"
                 },
                 "mmseqs_min_id": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "mmseqs_min_cov": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "mmseqs_cov_type":{
-                    "type": "string"
-                }
-                ,
-                "split_fasta":{
-                    "type": "boolean"
+                    "type": "integer"
                 }
                 ,
                 "fasta_chunk_size":{
                     "type": "integer"
+                },
+                "split_fasta":{
+                    "type": "boolean"
+                },                 
+                "mmseqs_save_merged":{
+                    "type": "boolean"
                 }
+
+            }
+        },
+        "filtering_options": {
+            "title": "Institutional config options",
+            "type": "object",
+            "fa_icon": "fas fa-university",
+            "description": "Parameters used to describe centralised config profiles. These should not be edited.",
+            "help_text": "The centralised nf-core configuration profiles use a handful of pipeline parameters to describe themselves. This information is then printed to the Nextflow log when you run a pipeline. You should not need to change these values when you run a pipeline.",
+            "properties": {
+                "min_id": {
+                    "type": "number"
+                },
+                "min_cov": {
+                    "type": "number"
+                }
+
             }
         },
         "institutional_config_options": {
@@ -295,6 +314,10 @@
         },
         {
             "$ref": "#/definitions/generic_options"
+        }
+        ,
+        {
+            "$ref": "#/definitions/filtering_options"
         }
     ]
 }

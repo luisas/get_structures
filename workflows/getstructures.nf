@@ -82,6 +82,8 @@ workflow GETSTRUCTURES {
     )
     ch_versions = ch_versions.mix(DB_SEARCH.out.versions)
 
+
+
     //
     // SUBWORKFLOW: fetches the structures
     //
