@@ -2,7 +2,7 @@ process FILTER_HITS {
     tag "$hits"
     label 'process_low'
 
-    container 'luisas/python:bio3'
+    container '/users/cn/lsantus/sing_cache/luisas-python-bio3.img'
 
 
     input:

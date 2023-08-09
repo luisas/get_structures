@@ -50,6 +50,8 @@ include { FASTQC                      } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 include { DB_SEARCH                   } from '../subworkflows/local/db_search'
+include { MMSEQS_SEARCH_WF            } from '../subworkflows/local/mmseqs_search_wf'
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -76,13 +78,17 @@ workflow GETSTRUCTURES {
     // SUBWORKFLOW: Search for databases
     //
 
-    DB_SEARCH (
+    // DB_SEARCH (
+    //     INPUT_CHECK.out.fastas,
+    //     INPUT_CHECK.out.dbs
+    // )
+    // ch_versions = ch_versions.mix(DB_SEARCH.out.versions)
+
+    MMSEQS_SEARCH_WF(
         INPUT_CHECK.out.fastas,
         INPUT_CHECK.out.dbs
     )
-    ch_versions = ch_versions.mix(DB_SEARCH.out.versions)
-
-
+    ch_versions = ch_versions.mix(MMSEQS_SEARCH_WF.out.versions)
 
     //
     // SUBWORKFLOW: fetches the structures

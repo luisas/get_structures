@@ -40,7 +40,9 @@ workflow DB_SEARCH {
                                     fasta: [ meta, fastafile ]
                                     db: [ metadb, dbfile ]
                                 }
-
+    ch_input_for_search.fasta.view()
+    ch_input_for_search.db.view()
+    
     MMSEQS_EASYSEARCH ( ch_input_for_search.fasta, ch_input_for_search.db )
     hits = MMSEQS_EASYSEARCH.out.tsv
     ch_versions = ch_versions.mix(MMSEQS_EASYSEARCH.out.versions)
