@@ -1,3 +1,3 @@
 id,fasta
-seatoxin-ref,/users/cn/lsantus/projects/nf-core-msa/test-dataset/setoxin-ref.fa
-toxin-ref,/users/cn/lsantus/projects/nf-core-msa/test-dataset/toxin-ref.fa
+seatoxin-ref,/users/cn/lsantus/data/structural_regression/homfam/refs/seatoxin-ref.fa
+toxin-ref,/users/cn/lsantus/data/structural_regression/homfam/refs/toxin-ref.fa
