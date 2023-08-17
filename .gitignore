@@ -8,4 +8,4 @@ testing*
 *.pyc
 outdir/*
 .ipynb_checkpoints/
-outdir
+outdir/*
