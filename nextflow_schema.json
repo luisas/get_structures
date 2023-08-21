@@ -79,7 +79,7 @@
                     "type": "boolean"
                 },                 
                 "mmseqs_exact_kmer_matching":{
-                    "type": "boolean"
+                    "type": "integer"
                 }
 
             }
