@@ -89,19 +89,24 @@ workflow GETSTRUCTURES {
     // Select the hits to download from the database
     //
 
-    FILTER_HITS (
-        MMSEQS_SEARCH_WF.out.hits
-    )
-    ch_versions = ch_versions.mix(FILTER_HITS.out.versions)
+    if (!params.skip_filter_hits){
 
-    //
-    // SUBWORKFLOW: fetches the structures
-    //
-    // filter the not empty files 
+        FILTER_HITS (
+            MMSEQS_SEARCH_WF.out.hits
+        )
+        ch_versions = ch_versions.mix(FILTER_HITS.out.versions)
 
-    DOWNLOAD_STRUCTURE_AFDB (
-        FILTER_HITS.out.ids_to_download.filter{ it[1].size() > 0 }
-    )
+    }
+
+    if (!params.skip_filter_hits  & !params.skip_download){
+
+        DOWNLOAD_STRUCTURE_AFDB (
+            FILTER_HITS.out.ids_to_download.filter{ it[1].size() > 0 }
+        )
+        
+    }
+
+
 
 
     CUSTOM_DUMPSOFTWAREVERSIONS (

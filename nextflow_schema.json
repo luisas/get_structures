@@ -96,6 +96,12 @@
                 },
                 "min_cov": {
                     "type": "number"
+                }, 
+                "skip_filter_hits": {
+                    "type": "boolean"
+                },
+                "skip_download_hits": {
+                    "type": "boolean"
                 }
 
             }
