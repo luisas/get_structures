@@ -14,7 +14,7 @@ process MMSEQS_CREATEALIS {
     tuple val(meta3), path(db_target)
 
     output:
-    tuple val(meta), path("*.m8"), emit: m8
+    tuple val(meta), path("*.m8") , emit: hits
     path "versions.yml"           , emit: versions
 
     when:

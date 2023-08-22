@@ -11,6 +11,7 @@ process FILTER_HITS {
 
     output:
     tuple val(meta), file("*_filtered_hits.m8"), emit: filtered_hits
+    tuple val(meta), file("*_ids_to_download.txt"), emit: ids_to_download
     path "versions.yml", emit: versions
 
 

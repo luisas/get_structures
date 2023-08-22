@@ -45,9 +45,10 @@ workflow MMSEQS_SEARCH_WF {
     ch_input_for_createtsv.fasta.view()
     MMSEQS_CREATEALIS( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )     
 
-    MMSEQS_CREATETSV( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )
+    //MMSEQS_CREATETSV( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )
     
     emit:
+    hits     = MMSEQS_CREATEALIS.out.hits
     versions = ch_versions.ifEmpty(null)
 
 }

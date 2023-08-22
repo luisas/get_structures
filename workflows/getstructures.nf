@@ -49,8 +49,9 @@ include { INPUT_CHECK } from '../subworkflows/local/input_check'
 include { FASTQC                      } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
-include { DB_SEARCH                   } from '../subworkflows/local/db_search'
 include { MMSEQS_SEARCH_WF            } from '../subworkflows/local/mmseqs_search_wf'
+include { FILTER_HITS                 } from '../modules/local/filter_hits'
+include { DOWNLOAD_STRUCTURE_AFDB     } from '../modules/local/download_structure_afdb'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,12 +79,6 @@ workflow GETSTRUCTURES {
     // SUBWORKFLOW: Search for databases
     //
 
-    // DB_SEARCH (
-    //     INPUT_CHECK.out.fastas,
-    //     INPUT_CHECK.out.dbs
-    // )
-    // ch_versions = ch_versions.mix(DB_SEARCH.out.versions)
-
     MMSEQS_SEARCH_WF(
         INPUT_CHECK.out.fastas,
         INPUT_CHECK.out.dbs
@@ -91,9 +86,22 @@ workflow GETSTRUCTURES {
     ch_versions = ch_versions.mix(MMSEQS_SEARCH_WF.out.versions)
 
     //
-    // SUBWORKFLOW: fetches the structures
+    // Select the hits to download from the database
     //
 
+    FILTER_HITS (
+        MMSEQS_SEARCH_WF.out.hits
+    )
+    ch_versions = ch_versions.mix(FILTER_HITS.out.versions)
+
+    //
+    // SUBWORKFLOW: fetches the structures
+    //
+    // filter the not empty files 
+
+    DOWNLOAD_STRUCTURE_AFDB (
+        FILTER_HITS.out.ids_to_download.filter{ it[1].size() > 0 }
+    )
 
 
     CUSTOM_DUMPSOFTWAREVERSIONS (

@@ -55,7 +55,8 @@ def main():
     df.to_csv(output, sep="\t", header=None, index=False)
 
     # 2. Create file with IDs to download
-    df["target_id_nochain"].drop_duplicates().to_csv(output_ids, sep="\t", header=None, index=False)
+    #df["target_id_nochain"].drop_duplicates().to_csv(output_ids, sep="\t", header=None, index=False)
+    df[1].drop_duplicates().to_csv(output_ids, sep="\t", header=None, index=False)
 
     # 3. Create file also with chain informations
     df["chain"] = "NA"
