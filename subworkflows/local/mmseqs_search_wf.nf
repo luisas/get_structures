@@ -30,7 +30,7 @@ workflow MMSEQS_SEARCH_WF {
     
     MMSEQS_SEARCH ( ch_input_for_search.fasta, ch_input_for_search.db )
     result_db = MMSEQS_SEARCH.out.db_search
-    ch_versions = ch_versions.mix(MMSEQS_SEARCH.out.versions)
+    //ch_versions = ch_versions.mix(MMSEQS_SEARCH.out.versions)
 
     ch_input_for_search.fasta.combine(ch_input_for_search.db)
                         .combine(result_db, by:0 ).unique()

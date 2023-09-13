@@ -100,7 +100,7 @@
                 "skip_filter_hits": {
                     "type": "boolean"
                 },
-                "skip_download_hits": {
+                "skip_download": {
                     "type": "boolean"
                 }
 

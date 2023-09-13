@@ -88,11 +88,10 @@ workflow GETSTRUCTURES {
     //
     // Select the hits to download from the database
     //
-
     if (!params.skip_filter_hits){
 
         FILTER_HITS (
-            MMSEQS_SEARCH_WF.out.hits
+            MMSEQS_SEARCH_WF.out.hits.filter{ it[1].size() > 0 }
         )
         ch_versions = ch_versions.mix(FILTER_HITS.out.versions)
 
