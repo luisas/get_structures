@@ -54,20 +54,14 @@ def main():
     df = get_best_hits(hits)
     df.to_csv(output, sep="\t", header=None, index=False)
 
-    # 2. Create file with IDs to download
-    #df["target_id_nochain"].drop_duplicates().to_csv(output_ids, sep="\t", header=None, index=False)
+    # Create file with IDs to download
     df[1].drop_duplicates().to_csv(output_ids, sep="\t", header=None, index=False)
 
-    # 3. Create file also with chain informations
-    df["chain"] = "NA"
-    if "_" in df[1]:
-        df[df[1].str.contains("_")]["chain"] = df[df[1].str.contains("_")][1].str.split("_", expand = True)[1]
-    df[[0,1,"chain","target_id_nochain"]].to_csv(output_chains, sep="\t", header=None, index=False)
-
-    # 4. Create template file
+    # Create template file
     df["sep"] = "_P_"
     df["query_id"]=">"+df[0]
-    cols =  ["query_id","sep","target_id_nochain"]
+    df["target_id"] = df[1]
+    cols =  ["query_id","sep","target_id"]
     df[cols].to_csv(template, sep=" ", header=None, index=False)
 
 if __name__ == "__main__":

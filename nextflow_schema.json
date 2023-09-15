@@ -102,6 +102,9 @@
                 },
                 "skip_download": {
                     "type": "boolean"
+                },
+                "rename_structures": {
+                    "type": "boolean"
                 }
 
             }

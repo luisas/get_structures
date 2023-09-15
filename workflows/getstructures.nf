@@ -100,7 +100,8 @@ workflow GETSTRUCTURES {
     if (!params.skip_filter_hits  & !params.skip_download){
 
         DOWNLOAD_STRUCTURE_AFDB (
-            FILTER_HITS.out.ids_to_download.filter{ it[1].size() > 0 }
+            FILTER_HITS.out.ids_to_download.filter{ it[1].size() > 0 },
+            FILTER_HITS.out.template.filter{ it[1].size() > 0 }
         )
         
     }
