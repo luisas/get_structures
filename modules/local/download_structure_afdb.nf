@@ -3,10 +3,12 @@ process DOWNLOAD_STRUCTURE_AFDB {
     tag "$meta.id"
     label 'process_low'
 
+    
     container '/users/cn/lsantus/sing_cache/luisas-python-bio3.img'
 
     input:
     tuple val(meta), path(ids_to_download)
+    tuple val(meta), path(hits)
     tuple val(meta), path(template)
 
     output:
@@ -29,6 +31,19 @@ process DOWNLOAD_STRUCTURE_AFDB {
 
     if [ "$params.rename_structures" == "true" ]; then for structure in \$(ls *.pdb); do id=\$(echo \$structure | awk '{gsub(".pdb", "", \$1); print \$1}' ); mv \$id.pdb \$(grep \$id $template | awk '{gsub(">", "", \$1); print \$1}').pdb; done; fi
 
+    # ----------------------------------------------------
+    # Here cut them according to hits
+    # ----------------------------------------------------
+    cut_structures.py ${hits}
+    [ -f ./cut_structures_tmp.sh ] && tr ', ' ' ' < cut_structures_tmp.sh > cut_structures.sh
+    [ -f ./cut_structures.sh ] && bash ./cut_structures.sh
+    rm temp.pdb
+
+    # ----------------------------------------------------
+    # Here check their actual percentage identity 
+    # ----------------------------------------------------
+
+    
 
     """
 

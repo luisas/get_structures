@@ -12,55 +12,51 @@ min_id = float(sys.argv[6])
 min_cov = float(sys.argv[7])
 
 
-def get_best_hits(hits):
+def get_best_hits(hits, names):
+    # Define custom aggregation functions
+    agg_funcs = {
+        'fident': 'max',
+        'evalue': 'min',
+        'qcov': 'max',
+        'tcov': 'max',
+        'qseq': 'first',
+        'tseq': 'first'
+    }
 
-    df = pd.read_csv(hits, sep='\t', header = None)
+    # Read the CSV file with specified column names
+    df = pd.read_csv(hits, sep='\t', header=None, names=names)
 
-    # 1 - Get all the sequences with maximum identity
-    df_grouped = df.groupby([0]).agg({2:'max'})
-    df_grouped = df_grouped.reset_index()
-    df_grouped = df_grouped.rename(columns={2:'identity_max'})
-    df = pd.merge(df, df_grouped, how='left', on=[0])
-    df = df[df[2] == df['identity_max']]
+    # Group by the 'query' column and apply custom aggregation functions using transform
+    df['identity_max'] = df.groupby('query')['fident'].transform('max')
+    df['evalue_min'] = df.groupby('query')['evalue'].transform('min')
+    df['coverage_max'] = df.groupby('query')['qcov'].transform('max')
+    df['target_coverage'] = df.groupby('query')['tcov'].transform('max')
+    df['first_qseq'] = df.groupby('query')['qseq'].transform('first')
+    df['first_tseq'] = df.groupby('query')['tseq'].transform('first')
 
-    # Hits presenting a best match that also have the same id name are prioritized
-    df["target_id_nochain"] = df[1].str.split("_",expand = True)[0]
-    df["target_id_chainmerged"] = df[1].str.replace("_", "").str.lower()
+    # Drop duplicate rows to keep only unique 'query' values
+    df.drop_duplicates(subset='query', inplace=True)
 
-    df_id_match_1 = df[df[0] == df["target_id_nochain"]]
-    df_id_match_2 = df[df[0] == df["target_id_chainmerged"]]
-    df_id_match = pd.concat([df_id_match_1,df_id_match_2])
-    
-    # If there are multiple matches per sequence( multiple chains for example), pick the first one
-    df_id_match = df_id_match.groupby(0).first().reset_index()
-
-    # Polish final dataframe
-    df_noid_match = df[~df[0].isin(df_id_match[0])].reset_index(drop = True)
-    if(not df_noid_match.empty):
-        df_noid_match['max_fam'] = df_noid_match.groupby([0])[2].transform('max')
-        df_noid_match = df_noid_match[df_noid_match[2] == df_noid_match['max_fam']]
-        df_noid_match_filtered = df_noid_match.sort_values(by=[1]).groupby(0).first().reset_index()
-        final_df = pd.concat([df_id_match,df_noid_match_filtered])
-    else:
-        final_df = df_id_match
+    # Reset the index
+    df.reset_index(drop=True, inplace=True)
 
     # Add filter of coverage and identity
-    final_df = final_df[final_df[2] >= min_id]
-    final_df = final_df[final_df[12] >= min_cov]
+    df = df[df["fident"] >= min_id]
+    df = df[df["qcov"] >= min_cov]
 
-    return(final_df)
+    return(df)
 
 def main():
-    df = get_best_hits(hits)
+    df = get_best_hits(hits, names  = ["query", "target", "fident", "alnlen", "mismatch", "qseq", "tseq", "qend", "tstart", "tend", "evalue", "bits", "qcov", "tcov"])
     df.to_csv(output, sep="\t", header=None, index=False)
 
     # Create file with IDs to download
-    df[1].drop_duplicates().to_csv(output_ids, sep="\t", header=None, index=False)
+    df["target"].drop_duplicates().to_csv(output_ids, sep="\t", header=None, index=False)
 
     # Create template file
     df["sep"] = "_P_"
-    df["query_id"]=">"+df[0]
-    df["target_id"] = df[1]
+    df["query_id"]=">"+df["query"]
+    df["target_id"] = df["target"]
     cols =  ["query_id","sep","target_id"]
     df[cols].to_csv(template, sep=" ", header=None, index=False)
 
