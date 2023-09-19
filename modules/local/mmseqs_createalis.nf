@@ -2,7 +2,7 @@
 process MMSEQS_CREATEALIS {
     tag "$meta.id"
     label 'process_medium'
-    storeDir "${params.outdir}/mmseqs/test/id_${params.mmseqs_min_id}_cov_${params.mmseqs_min_cov}_covtype_${params.mmseqs_cov_type}_kmermatching_${params.mmseqs_exact_kmer_matching}/search_output"
+
     conda "bioconda::mmseqs2=14.7e284"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321h6a68c12_2':
@@ -15,7 +15,7 @@ process MMSEQS_CREATEALIS {
 
     output:
     tuple val(meta), path("${meta.id}.m8") , emit: hits
-    //path "versions.yml"           , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

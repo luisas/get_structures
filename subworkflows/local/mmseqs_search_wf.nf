@@ -19,7 +19,7 @@ workflow MMSEQS_SEARCH_WF {
     //
     MMSEQS_CREATEDB( ch_fastas )
     query_db = MMSEQS_CREATEDB.out.db
-    ch_versions = ch_versions.mix(MMSEQS_CREATEDB.out.versions)
+    // ch_versions = ch_versions.mix(MMSEQS_CREATEDB.out.versions)
 
     ch_input_for_search = query_db.combine(target_db)
                                    .multiMap{
@@ -27,10 +27,12 @@ workflow MMSEQS_SEARCH_WF {
                                         fasta: [ meta, fastafile ]
                                         db: [ metadb, dbfile ]
                                     }
-    
+    //
+    // Search against target db
+    //
     MMSEQS_SEARCH ( ch_input_for_search.fasta, ch_input_for_search.db )
     result_db = MMSEQS_SEARCH.out.db_search
-    //ch_versions = ch_versions.mix(MMSEQS_SEARCH.out.versions)
+    // ch_versions = ch_versions.mix(MMSEQS_SEARCH.out.versions)
 
     ch_input_for_search.fasta.combine(ch_input_for_search.db)
                         .combine(result_db, by:0 ).unique()
@@ -41,11 +43,13 @@ workflow MMSEQS_SEARCH_WF {
                             result: [ meta, resultfile ]
                         }.set{ ch_input_for_createtsv }
 
-    ch_input_for_createtsv.result.view()
-    ch_input_for_createtsv.fasta.view()
-    MMSEQS_CREATEALIS( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )     
 
-    //MMSEQS_CREATETSV( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )
+    //
+    // Format results
+    //
+    MMSEQS_CREATEALIS( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )     
+    //ch_versions = ch_versions.mix(MMSEQS_CREATEALIS.out.versions)
+
     
     emit:
     hits     = MMSEQS_CREATEALIS.out.hits

@@ -85,6 +85,9 @@ workflow GETSTRUCTURES {
     )
     ch_versions = ch_versions.mix(MMSEQS_SEARCH_WF.out.versions)
 
+    //ch_input = Channel.fromSamplesheet('input')
+    //ch_tools = Channel.fromSamplesheet('tools')
+
     //
     // Select the hits to download from the database
     //

@@ -3,7 +3,7 @@ process FILTER_HITS {
     label 'process_low'
 
     container '/users/cn/lsantus/sing_cache/luisas-python-bio3.img'
-    storeDir "${params.outdir}/mmseqs/test/test"
+    storeDir "${params.outdir}/filter/${params.min_id}_${params.min_cov}/${meta.id}"
 
 
     input:
