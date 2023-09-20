@@ -44,6 +44,9 @@ def get_best_hits(hits, names):
     df = df[df["fident"] >= min_id]
     df = df[df["qcov"] >= min_cov]
 
+    # Remove columns that are not needed anymore
+    df.drop(columns=['identity_max', 'evalue_min', 'coverage_max', 'target_coverage', 'first_qseq', 'first_tseq'], inplace=True)
+    
     return(df)
 
 def main():

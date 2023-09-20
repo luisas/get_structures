@@ -84,6 +84,19 @@
 
             }
         },
+        "stats_options": {
+            "title": "stats config options",
+            "type": "object",
+            "fa_icon": "fas fa-university",
+            "description": "Parameters used to describe centralised config profiles. These should not be edited.",
+            "help_text": "The centralised nf-core configuration profiles use a handful of pipeline parameters to describe themselves. This information is then printed to the Nextflow log when you run a pipeline. You should not need to change these values when you run a pipeline.",
+            "properties": {
+                "skip_stats": {
+                    "type": "boolean"
+                }
+
+            }
+        },
         "filtering_options": {
             "title": "Institutional config options",
             "type": "object",
@@ -330,6 +343,10 @@
         ,
         {
             "$ref": "#/definitions/filtering_options"
+        }
+        ,
+        {
+            "$ref": "#/definitions/stats_options"
         }
     ]
 }

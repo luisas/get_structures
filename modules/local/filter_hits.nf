@@ -3,7 +3,6 @@ process FILTER_HITS {
     label 'process_low'
 
     container '/users/cn/lsantus/sing_cache/luisas-python-bio3.img'
-    storeDir "${params.outdir}/filter/${params.min_id}_${params.min_cov}/${meta.id}"
 
 
     input:
@@ -11,9 +10,9 @@ process FILTER_HITS {
 
 
     output:
-    tuple val(meta), file("*_filtered_hits.m8")   , emit: hits
-    tuple val(meta), file("*_ids_to_download.txt"), emit: ids_to_download
-    tuple val(meta), file("*_template.txt")       , emit: template
+    tuple val(meta), file("${meta.id}_filtered_hits.m8")   , emit: hits
+    tuple val(meta), file("${meta.id}_ids_to_download.txt"), emit: ids_to_download
+    tuple val(meta), file("${meta.id}_template.txt")       , emit: template
     path "versions.yml", emit: versions
 
 

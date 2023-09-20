@@ -52,6 +52,7 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 include { MMSEQS_SEARCH_WF            } from '../subworkflows/local/mmseqs_search_wf'
 include { FILTER_HITS                 } from '../modules/local/filter_hits'
 include { DOWNLOAD_STRUCTURE_AFDB     } from '../modules/local/download_structure_afdb'
+include { STATS                       } from '../subworkflows/local/stats'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,8 +86,13 @@ workflow GETSTRUCTURES {
     )
     ch_versions = ch_versions.mix(MMSEQS_SEARCH_WF.out.versions)
 
-    //ch_input = Channel.fromSamplesheet('input')
-    //ch_tools = Channel.fromSamplesheet('tools')
+
+
+    if( !params.skip_stats ){
+        STATS(INPUT_CHECK.out.fastas)
+        ch_versions = ch_versions.mix(STATS.out.versions)
+    }
+    
 
     //
     // Select the hits to download from the database
@@ -109,9 +115,6 @@ workflow GETSTRUCTURES {
         )
         
     }
-
-
-
 
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')

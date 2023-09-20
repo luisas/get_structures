@@ -1,7 +1,7 @@
 process MMSEQS_CREATEDB {
     tag "$meta.id"
     label 'process_low'
-    storeDir "${params.outdir}/mmseqs/dbs"
+
     conda "bioconda::mmseqs2=14.7e284"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321hf1761c0_0':

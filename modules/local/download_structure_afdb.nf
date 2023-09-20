@@ -29,7 +29,9 @@ process DOWNLOAD_STRUCTURE_AFDB {
 
     for id in \$(cat $ids_to_download); do url="https://alphafold.ebi.ac.uk/files/\$id.pdb"; if `validate_url \$url == "true"`; then wget \$url; else echo "\$id NOT FOUND"; fi ; done
 
-    if [ "$params.rename_structures" == "true" ]; then for structure in \$(ls *.pdb); do id=\$(echo \$structure | awk '{gsub(".pdb", "", \$1); print \$1}' ); mv \$id.pdb \$(grep \$id $template | awk '{gsub(">", "", \$1); print \$1}').pdb; done; fi
+    while read -r sequence sep fetched_structure; do cp "\$fetched_structure.pdb" "\${sequence#>}.pdb"; done < $template; 
+
+    rm AF*.pdb
 
     # ----------------------------------------------------
     # Here cut them according to hits
