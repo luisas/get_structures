@@ -10,6 +10,7 @@ output_ids=sys.argv[4]
 output_chains=sys.argv[5]
 min_id = float(sys.argv[6])
 min_cov = float(sys.argv[7])
+header = sys.argv[8]
 
 
 def get_best_hits(hits, names):
@@ -50,7 +51,7 @@ def get_best_hits(hits, names):
     return(df)
 
 def main():
-    df = get_best_hits(hits, names  = ["query", "target", "fident", "alnlen", "mismatch", "qseq", "tseq", "qend", "tstart", "tend", "evalue", "bits", "qcov", "tcov"])
+    df = get_best_hits(hits, names  = header.split(","))
     df.to_csv(output, sep="\t", header=None, index=False)
 
     # Create file with IDs to download
