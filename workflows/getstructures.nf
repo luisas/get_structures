@@ -50,6 +50,7 @@ include { FASTQC                      } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 include { MMSEQS_SEARCH_WF            } from '../subworkflows/local/mmseqs_search_wf'
+include { MMSEQS_EASYSEARCH_WF        } from '../subworkflows/local/mmseqs_easysearch_wf'
 include { FILTER_HITS                 } from '../modules/local/filter_hits'
 include { DOWNLOAD_STRUCTURE_AFDB     } from '../modules/local/download_structure_afdb'
 include { STATS                       } from '../subworkflows/local/stats'
@@ -76,17 +77,6 @@ workflow GETSTRUCTURES {
     )
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
-    // 
-    // SUBWORKFLOW: Search for databases
-    //
-
-    MMSEQS_SEARCH_WF(
-        INPUT_CHECK.out.fastas,
-        INPUT_CHECK.out.dbs
-    )
-    ch_versions = ch_versions.mix(MMSEQS_SEARCH_WF.out.versions)
-
-
 
     if( !params.skip_stats ){
         STATS(INPUT_CHECK.out.fastas)
@@ -94,13 +84,37 @@ workflow GETSTRUCTURES {
     }
     
 
+    // 
+    // SUBWORKFLOW: Search for databases
+    //
+
+    if (params.easy_search){
+
+        MMSEQS_EASYSEARCH_WF (
+            INPUT_CHECK.out.fastas,
+            INPUT_CHECK.out.dbs
+        )
+        hits = MMSEQS_EASYSEARCH_WF.out.hits
+        ch_versions = ch_versions.mix(MMSEQS_EASYSEARCH_WF.out.versions)
+    
+    }else{
+     
+        MMSEQS_SEARCH_WF(
+            INPUT_CHECK.out.fastas,
+            INPUT_CHECK.out.dbs
+        )
+        hits = MMSEQS_SEARCH_WF.out.hits
+        ch_versions = ch_versions.mix(MMSEQS_SEARCH_WF.out.versions)
+    
+    }
+
     //
     // Select the hits to download from the database
     //
     if (!params.skip_filter_hits){
 
         FILTER_HITS (
-            MMSEQS_SEARCH_WF.out.hits.filter{ it[1].size() > 0 }
+            hits.filter{ it[1].size() > 0 }
         )
         ch_versions = ch_versions.mix(FILTER_HITS.out.versions)
 

@@ -36,16 +36,10 @@ process DOWNLOAD_STRUCTURE_AFDB {
     # ----------------------------------------------------
     # Here cut them according to hits
     # ----------------------------------------------------
-    cut_structures.py ${hits}
+    cut_structures.py ${hits} $args
     [ -f ./cut_structures_tmp.sh ] && tr ', ' ' ' < cut_structures_tmp.sh > cut_structures.sh
     [ -f ./cut_structures.sh ] && bash ./cut_structures.sh
     rm temp.pdb
-
-    # ----------------------------------------------------
-    # Here check their actual percentage identity 
-    # ----------------------------------------------------
-
-    
 
     """
 

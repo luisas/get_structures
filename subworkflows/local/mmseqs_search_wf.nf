@@ -19,7 +19,7 @@ workflow MMSEQS_SEARCH_WF {
     //
     MMSEQS_CREATEDB( ch_fastas )
     query_db = MMSEQS_CREATEDB.out.db
-    // ch_versions = ch_versions.mix(MMSEQS_CREATEDB.out.versions)
+    //ch_versions = ch_versions.mix(MMSEQS_CREATEDB.out.versions)
 
     ch_input_for_search = query_db.combine(target_db)
                                    .multiMap{
@@ -32,7 +32,7 @@ workflow MMSEQS_SEARCH_WF {
     //
     MMSEQS_SEARCH ( ch_input_for_search.fasta, ch_input_for_search.db )
     result_db = MMSEQS_SEARCH.out.db_search
-    // ch_versions = ch_versions.mix(MMSEQS_SEARCH.out.versions)
+    //ch_versions = ch_versions.mix(MMSEQS_SEARCH.out.versions)
 
     ch_input_for_search.fasta.combine(ch_input_for_search.db)
                         .combine(result_db, by:0 ).unique()
@@ -48,7 +48,11 @@ workflow MMSEQS_SEARCH_WF {
     // Format results
     //
     MMSEQS_CREATEALIS( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )     
-    //ch_versions = ch_versions.mix(MMSEQS_CREATEALIS.out.versions)
+    ch_versions = ch_versions.mix(MMSEQS_CREATEALIS.out.versions)
+
+    // Create CSV
+    MMSEQS_CREATETSV(  ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db)
+    ch_versions = ch_versions.mix(MMSEQS_CREATETSV.out.versions)
 
     
     emit:

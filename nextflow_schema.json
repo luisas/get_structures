@@ -80,6 +80,9 @@
                 },                 
                 "mmseqs_exact_kmer_matching":{
                     "type": "integer"
+                }, 
+                "easy_search":{
+                    "type": "boolean"
                 }
 
             }
