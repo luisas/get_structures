@@ -50,9 +50,10 @@ workflow MMSEQS_SEARCH_WF {
     MMSEQS_CREATEALIS( ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db  )     
     ch_versions = ch_versions.mix(MMSEQS_CREATEALIS.out.versions)
 
+    
     // Create CSV
-    MMSEQS_CREATETSV(  ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db)
-    ch_versions = ch_versions.mix(MMSEQS_CREATETSV.out.versions)
+    //MMSEQS_CREATETSV(  ch_input_for_createtsv.result, ch_input_for_createtsv.fasta, ch_input_for_createtsv.db)
+    //ch_versions = ch_versions.mix(MMSEQS_CREATETSV.out.versions)
 
     
     emit:
